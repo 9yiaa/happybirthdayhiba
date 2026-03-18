@@ -56,16 +56,43 @@ animation:fade 1s;
 }
 
 /* الهدية */
-.gift{
-font-size:85px;
+.gift-container{
 margin-top:25px;
 cursor:pointer;
 display:none;
-transition:0.3s;
 }
 
-.gift:hover{
-transform:scale(1.2);
+.gift-box{
+position:relative;
+width:80px;
+height:80px;
+margin:auto;
+}
+
+.lid{
+position:absolute;
+top:0;
+width:100%;
+height:40%;
+background:#f38ab5;
+border-radius:4px 4px 0 0;
+transition:transform 0.7s ease;
+transform-origin:top center;
+z-index:2;
+}
+
+.box{
+position:absolute;
+bottom:0;
+width:100%;
+height:60%;
+background:#f7a8c9;
+border-radius:0 0 4px 4px;
+z-index:1;
+}
+
+.gift-box.open .lid{
+transform:rotateX(-120deg) translateY(-20px);
 }
 
 /* الرسالة */
@@ -101,7 +128,6 @@ top:0;
 left:0;
 pointer-events:none;
 }
-
 </style>
 </head>
 
@@ -120,10 +146,16 @@ pointer-events:none;
 كل سنة وانتي طيبة يا هبة، عقبال مية سنة يارب 🎉
 </div>
 
-<div class="gift" id="gift">🎁</div>
+<!-- صندوق الهدية -->
+<div class="gift-container" id="giftContainer">
+  <div class="gift-box" id="giftBox">
+    <div class="lid"></div>
+    <div class="box"></div>
+  </div>
+</div>
 
+<!-- الرسالة -->
 <div class="message-box" id="message">
-
 يا هبة،
 
 كل سنة وانتي بخير وعقبال سنين كتير مليانة فرح وضحك وأيام حلوة.  
@@ -141,45 +173,41 @@ pointer-events:none;
 <div class="signature">
 من صحباتك، كلنا بنحبك 💗
 </div>
-
 </div>
 
-<!-- موسيقى -->
-<audio id="music" loop>
-<source src="birthday.mp3" type="audio/mpeg">
-</audio>
-
 <script>
-
-/* ظهور الرقم */
+// ظهور الرقم 16
 setTimeout(()=>{
 let age=document.getElementById("age")
 age.style.display="block"
 age.classList.add("animate")
 },2500)
 
-/* التحول 16 → 17 */
+// التحول 16 → 17
 setTimeout(()=>{
 let age=document.getElementById("age")
 age.innerText="17"
 age.classList.add("animate")
 
 document.getElementById("wish").style.display="block"
-document.getElementById("gift").style.display="block"
+document.getElementById("giftContainer").style.display="block"
 
 startConfetti()
-
-document.getElementById("music").play()
-
 },4500)
 
-/* فتح الهدية */
-document.getElementById("gift").onclick=function(){
-document.getElementById("message").style.display="block"
+// فتح الهدية
+let giftBox=document.getElementById("giftBox")
+let giftContainer=document.getElementById("giftContainer")
+let message=document.getElementById("message")
+
+giftContainer.onclick=function(){
+  giftBox.classList.add("open")
+  setTimeout(()=>{
+    message.style.display="block"
+  },1000)
 }
 
-/* الكونفيتي */
-
+// الكونفيتي
 const canvas=document.getElementById("confetti")
 const ctx=canvas.getContext("2d")
 
@@ -187,7 +215,6 @@ canvas.width=window.innerWidth
 canvas.height=window.innerHeight
 
 let pieces=[]
-
 for(let i=0;i<150;i++){
 pieces.push({
 x:Math.random()*canvas.width,
@@ -199,31 +226,25 @@ d:Math.random()*50
 
 function draw(){
 ctx.clearRect(0,0,canvas.width,canvas.height)
-
 ctx.fillStyle="#f7a8c9"
-
 pieces.forEach(p=>{
 ctx.beginPath()
 ctx.arc(p.x,p.y,p.r,0,Math.PI*2)
 ctx.fill()
-})
-
 update()
+})
 }
 
 function update(){
 pieces.forEach(p=>{
 p.y+=2
-if(p.y>canvas.height){
-p.y=0
-}
+if(p.y>canvas.height){p.y=0}
 })
 }
 
 function startConfetti(){
 setInterval(draw,20)
 }
-
 </script>
 
 </body>
