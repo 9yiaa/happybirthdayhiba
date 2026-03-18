@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Heba</title>
+
+<style>
+
+body{
+background:linear-gradient(180deg,#fff0f6,#ffe6f2);
+font-family:Arial, Helvetica, sans-serif;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+height:100vh;
+text-align:center;
+color:#333;
+}
+
+/* النص الأول */
+
+.intro{
+font-size:28px;
+font-weight:bold;
+max-width:700px;
+animation:fade 1s;
+}
+
+/* الرقم */
+
+.age{
+font-size:120px;
+font-weight:bold;
+margin-top:40px;
+color:#f38ab5;
+display:none;
+}
+
+/* التهنئة */
+
+.wish{
+font-size:22px;
+margin-top:10px;
+display:none;
+}
+
+/* الهدية */
+
+.gift{
+font-size:80px;
+margin-top:25px;
+cursor:pointer;
+display:none;
+transition:0.3s;
+}
+
+.gift:hover{
+transform:scale(1.1);
+}
+
+/* صندوق الرسالة */
+
+.message-box{
+display:none;
+background:white;
+padding:30px;
+border-radius:12px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+max-width:500px;
+margin-top:25px;
+line-height:1.8;
+font-size:17px;
+animation:fade 0.6s;
+}
+
+.signature{
+margin-top:20px;
+font-weight:bold;
+color:#f38ab5;
+}
+
+/* انيميشن */
+
+@keyframes fade{
+from{opacity:0; transform:translateY(10px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="intro">
+أخيرًا إتأكدنا انك هبة...  
+دلوقتي نقدر نظهرلك باقي المفاجئات واحنا متطمنين!
+</div>
+
+<div class="age" id="age">16</div>
+
+<div class="wish" id="wish">
+كل سنة وانتي طيبة يا هبة، عقبال مية سنة يارب 🎉
+</div>
+
+<div class="gift" id="gift">🎁</div>
+
+<div class="message-box" id="message">
+
+يا هبة،
+
+كل سنة وانتي بخير وعقبال سنين كتير مليانة ضحك وفرح ونجاحات.  
+وجودك في حياتنا حاجة إحنا فعلًا بنقدرها جدًا، وكل لحظة قضيناها سوا كانت مليانة ذكريات جميلة.  
+
+إحنا ممتنين إننا عرفناك، وإن صداقتنا استمرت وكبرت مع الوقت.  
+نتمنى إن السنة الجديدة دي تكون بداية لحاجات أجمل، وأحلام تتحقق، وأيام تكون أخف وأسعد عليك.  
+
+إنتي شخص مميز فعلًا، وبتضيفي طاقة حلوة لأي مكان تكوني فيه.  
+وعشان كده حبينا نعمل لك المفاجأة الصغيرة دي، عشان نقول لك قد إيه وجودك مهم بالنسبة لنا.
+
+كل سنة وانتي طيبة يا هبة 🤍  
+وإن شاء الله الأيام الجاية تكون أحلى بكتير.
+
+<div class="signature">
+من صحباتك، كلنا بنحبك 💗
+</div>
+
+</div>
+
+<script>
+
+/* بعد 3 ثواني يظهر الرقم */
+
+setTimeout(()=>{
+document.getElementById("age").style.display="block"
+},3000)
+
+/* يتحول من 16 الى 17 */
+
+setTimeout(()=>{
+document.getElementById("age").innerText="17"
+document.getElementById("wish").style.display="block"
+document.getElementById("gift").style.display="block"
+},5000)
+
+/* فتح الهدية */
+
+document.getElementById("gift").onclick=function(){
+document.getElementById("message").style.display="block"
+}
+
+</script>
+
+</body>
+</html>
