@@ -1,190 +1,368 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>Verification</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hiba's Birthday</title>
+    <!-- استدعاء خط عربي جميل -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --primary-pink: #ffb7c5; /* لون وردي هادي */
+            --secondary-pink: #ff9eb5;
+            --text-color: #ffffff;
+        }
 
-<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
 
-body{
-background:#faf7fb;
-font-family:Arial, sans-serif;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-flex-direction:column;
-}
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-align: center;
+        }
 
-/* CAPTCHA BOX */
+        /* --- Verification Section Styles --- */
+        .verification-container {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 0 20px rgba(255, 183, 197, 0.2);
+            border: 1px solid #333;
+            transition: all 0.5s ease;
+        }
 
-.captcha-box{
-border:1px solid #ddd;
-background:white;
-padding:15px 20px;
-display:flex;
-align-items:center;
-gap:12px;
-cursor:pointer;
-border-radius:6px;
-box-shadow:0 4px 15px rgba(0,0,0,0.05);
-}
+        .captcha-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-.checkbox{
-width:24px;
-height:24px;
-border:2px solid #e8a8c7;
-border-radius:4px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:16px;
-color:#e8a8c7;
-}
+        .captcha-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-pink);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: black;
+            font-weight: bold;
+        }
 
-.captcha-text{
-font-size:16px;
-}
+        .checkbox-custom {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--primary-pink);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            background: transparent;
+            transition: 0.3s;
+        }
 
-/* LOADING */
+        .checkbox-custom:hover {
+            background: rgba(255, 183, 197, 0.1);
+        }
 
-.loading{
-display:none;
-margin-top:20px;
-text-align:center;
-}
+        .checkbox-custom.checked::after {
+            content: '✔';
+            position: absolute;
+            color: var(--primary-pink);
+            font-size: 18px;
+            top: -2px;
+            left: 3px;
+        }
 
-.spinner{
-width:40px;
-height:40px;
-border:4px solid #ffd6e8;
-border-top:4px solid #f08bb7;
-border-radius:50%;
-animation:spin 1s linear infinite;
-margin:auto;
-}
+        .btn-option {
+            background: transparent;
+            border: 1px solid var(--primary-pink);
+            color: var(--primary-pink);
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
 
-@keyframes spin{
-0%{transform:rotate(0deg)}
-100%{transform:rotate(360deg)}
-}
+        .btn-option:hover {
+            background: var(--primary-pink);
+            color: black;
+        }
 
-/* QUESTION BOX */
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: white;
+            text-align: center;
+            outline: none;
+            transition: 0.3s;
+        }
 
-.box{
-display:none;
-margin-top:25px;
-background:white;
-padding:25px;
-border-radius:10px;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
-text-align:center;
-width:280px;
-}
+        input[type="text"]:focus {
+            border-color: var(--primary-pink);
+            box-shadow: 0 0 10px rgba(255, 183, 197, 0.3);
+        }
 
-button{
-background:#f7a8c9;
-border:none;
-padding:10px 18px;
-border-radius:6px;
-cursor:pointer;
-margin:6px;
-color:white;
-font-size:14px;
-transition:0.2s;
-}
+        .hidden {
+            display: none !important;
+        }
 
-button:hover{
-background:#f38ab5;
-}
+        /* --- Main Content Styles --- */
+        .main-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
 
-input{
-padding:8px;
-margin-top:10px;
-width:70%;
-border:1px solid #ddd;
-border-radius:6px;
-}
+        .age-display {
+            font-size: 8rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+            text-shadow: 0 0 30px rgba(255, 183, 197, 0.5);
+            margin-bottom: 20px;
+            position: relative;
+            height: 150px; /* ثابت لمنع القفز */
+        }
 
-.error{
-color:#ff5a7d;
-margin-top:10px;
-font-size:13px;
-}
+        .gift-box {
+            font-size: 5rem;
+            cursor: pointer;
+            animation: float 3s ease-in-out infinite;
+            margin: 20px auto;
+            user-select: none;
+        }
 
-</style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .message-card {
+            background: #111;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid var(--primary-pink);
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.8;
+            display: none; /* مخفي في البداية */
+            animation: popUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-pink);
+            animation: fall linear forwards;
+            z-index: 999;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(720deg); }
+        }
+
+    </style>
 </head>
-
 <body>
 
-<div class="captcha-box" onclick="startVerify()">
-<div class="checkbox" id="check"></div>
-<div class="captcha-text">I'm not a robot</div>
-</div>
+    <!-- صفحة التحقق (الكابتشا) -->
+    <div id="verificationPage" class="verification-container">
+        
+        <!-- الخطوة 1: هل أنت هبة؟ -->
+        <div id="step1">
+            <div class="captcha-header">
+                <div class="captcha-icon">C</div>
+                <span style="color: #aaa; font-size: 0.9rem;">Human Verification</span>
+            </div>
+            <h3 style="margin-bottom: 20px;">قبل ما نتم عملية الفيرفكيشن، انتي هبة؟</h3>
+            <div style="display: flex; justify-content: center; gap: 10px;">
+                <button class="btn-option" onclick="nextStep('yes')">ايوه أكيد</button>
+                <button class="btn-option" onclick="nextStep('no')">لا</button>
+            </div>
+        </div>
 
-<div class="loading" id="loading">
-<div class="spinner"></div>
-<p>Verifying...</p>
-</div>
+        <!-- الخطوة 2: إيه لونك المفضل؟ -->
+        <div id="step2" class="hidden">
+            <div class="captcha-header">
+                <div class="checkbox-custom checked"></div>
+                <span style="color: #aaa; font-size: 0.9rem;">Identity Check</span>
+            </div>
+            <h3 style="margin-bottom: 20px;">عشان نتأكد انك هبة فعلا، إيه لونك المفضل؟</h3>
+            <input type="text" id="colorInput" placeholder="اكتبي اللون هنا..." autocomplete="off">
+            <p id="errorMsg" style="color: red; font-size: 0.8rem; margin-top: 5px; display: none;">إجابة غلط يا كبيرة!</p>
+        </div>
 
-<div class="box" id="q1">
-<p>قبل ما نتم عملية التحقق…<br>انتي هبة؟</p>
+    </div>
 
-<button onclick="next()">ايوه أكيد</button>
-<button onclick="next()">لا</button>
-</div>
+    <!-- الصفحة الرئيسية للموقع -->
+    <div id="mainPage" class="main-content hidden">
+        
+        <!-- العداد العمري -->
+        <div id="ageNumber" class="age-display">16</div>
+        
+        <!-- رسالة الانتقال -->
+        <h2 id="transitionText" style="font-weight: 300; opacity: 0;">Loading new age...</h2>
 
-<div class="box" id="q2">
-<p>عشان نتأكد إنك هبة فعلاً…<br>إيه لونك المفضل؟</p>
+        <!-- صندوق الهدية -->
+        <div id="giftBox" class="gift-box hidden">🎁</div>
+        <p id="clickHint" class="hidden" style="color: #888; font-size: 0.9rem;">اضغطي عشان تشوفي المفاجأة</p>
 
-<input id="answer" placeholder="الإجابة هنا">
+        <!-- رسالة التهنئة النهائية -->
+        <div id="finalMessage" class="message-card">
+            <h2 style="color: var(--primary-pink); margin-bottom: 15px;">كل عام وانتي بخير يا هبة! 🌸</h2>
+            <p>
+                سنة سعيدة يا جميلة.. 17 سنة دي بداية مرحلة جديدة وحلوة أوي.<br>
+                ربنا يخليكي لينا ويحققلك كل اللي في قلبك.<br>
+                استمتعي بيومك وهديتك! ❤️
+            </p>
+            <div style="margin-top: 20px; font-size: 0.8rem; color: #666;">Made with love for Hiba</div>
+        </div>
 
-<br>
-<button onclick="check()">تأكيد</button>
+    </div>
 
-<div class="error" id="wrong"></div>
+    <script>
+        // المتغيرات للتحكم
+        const correctColor = ["وردي", "pink", "روز"]; // يمكنك إضافة ألوان أخرى مقبولة
+        
+        // عناصر الـ DOM
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const verificationPage = document.getElementById('verificationPage');
+        const mainPage = document.getElementById('mainPage');
+        const colorInput = document.getElementById('colorInput');
+        const errorMsg = document.getElementById('errorMsg');
+        
+        const ageNumber = document.getElementById('ageNumber');
+        const transitionText = document.getElementById('transitionText');
+        const giftBox = document.getElementById('giftBox');
+        const clickHint = document.getElementById('clickHint');
+        const finalMessage = document.getElementById('finalMessage');
 
-</div>
+        // دالة الانتقال بين أسئلة الكابتشا
+        function nextStep(answer) {
+            if (answer === 'yes') {
+                step1.classList.add('hidden');
+                step2.classList.remove('hidden');
+            } else {
+                alert("مش لايقين عليكِ يا هبة 😂 حاولي تاني!");
+            }
+        }
 
-<script>
+        // التحقق من الإجابة الصحيحة
+        colorInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const val = colorInput.value.trim().toLowerCase();
+                
+                // تحقق بسيط (لو الكلمة موجودة في المصفوفة)
+                if (correctColor.some(color => val.includes(color))) {
+                    enterSite();
+                } else {
+                    errorMsg.style.display = 'block';
+                    colorInput.style.borderColor = 'red';
+                    setTimeout(() => {
+                        errorMsg.style.display = 'none';
+                        colorInput.style.borderColor = '#444';
+                        colorInput.value = '';
+                    }, 2000);
+                }
+            }
+        });
 
-function startVerify(){
+        // دالة الدخول للموقع وتشغيل الأنيميشن
+        function enterSite() {
+            // إخفاء الكابتشا
+            verificationPage.style.opacity = '0';
+            setTimeout(() => {
+                verificationPage.classList.add('hidden');
+                mainPage.classList.remove('hidden');
+                
+                // بدء سيناريو الموقع
+                startBirthdaySequence();
+            }, 500);
+        }
 
-document.getElementById("check").innerHTML="✓"
+        function startBirthdaySequence() {
+            // ظهور الرقم 16
+            setTimeout(() => {
+                mainPage.style.opacity = '1';
+                mainPage.style.transform = 'translateY(0)';
+            }, 100);
 
-document.getElementById("loading").style.display="block"
+            // تغيير الرقم من 16 لـ 17
+            setTimeout(() => {
+                ageNumber.innerText = "17";
+                ageNumber.style.color = "#fff"; // تغيير اللون للحظة
+                
+                transitionText.style.opacity = '1';
+                
+                setTimeout(() => {
+                    ageNumber.style.color = "var(--primary-pink)";
+                    transitionText.style.opacity = '0';
+                    
+                    // إظهار الهدية
+                    giftBox.classList.remove('hidden');
+                    clickHint.classList.remove('hidden');
+                }, 1500);
+            }, 2000);
+        }
 
-setTimeout(function(){
+        // تفعيل صندوق الهدية
+        giftBox.addEventListener('click', () => {
+            giftBox.style.animation = 'none'; // إيقاف الطفو
+            giftBox.innerText = '🎉'; // تغيير الأيقونة
+            
+            // تشغيل الكونفيتي (قصاصات الورق)
+            createConfetti();
 
-document.getElementById("loading").style.display="none"
-document.getElementById("q1").style.display="block"
+            // إظهار الرسالة
+            finalMessage.style.display = 'block';
+            clickHint.classList.add('hidden');
+            
+            // سكرول ناعم للرسالة لو الشاشة صغيرة
+            setTimeout(() => {
+                finalMessage.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        });
 
-},2000)
-
-}
-
-function next(){
-
-document.getElementById("q1").style.display="none"
-document.getElementById("q2").style.display="block"
-
-}
-
-function check(){
-
-let ans=document.getElementById("answer").value.toLowerCase()
-
-if(ans=="pink"){
-window.location.href="page2.html"
-}
-
-else{
-document.getElementById("wrong").innerText="هممم… مش متأكدين إنك هبة 🤨"
-}
-
-}
-
-</script>
-
+        // دالة إنشاء تأثير الاحتفال
+        function createConfetti() {
+            const colors = ['#ffb7c5', '#ffffff', '#ff69b4'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
 </body>
 </html>
