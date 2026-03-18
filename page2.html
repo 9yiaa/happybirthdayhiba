@@ -5,50 +5,59 @@
 <title>Happy Birthday Heba</title>
 
 <style>
-
 body{
-background:linear-gradient(180deg,#fff0f6,#ffe6f2);
-font-family:Arial, Helvetica, sans-serif;
+margin:0;
+height:100vh;
 display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
-height:100vh;
 text-align:center;
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(180deg,#fff0f6,#ffe6f2);
 color:#333;
+overflow:hidden;
 }
 
 /* النص الأول */
-
 .intro{
-font-size:28px;
+font-size:30px;
 font-weight:bold;
 max-width:700px;
 animation:fade 1s;
 }
 
 /* الرقم */
-
 .age{
-font-size:120px;
+font-size:130px;
 font-weight:bold;
-margin-top:40px;
 color:#f38ab5;
+margin-top:30px;
 display:none;
 }
 
-/* التهنئة */
+/* انيميشن ظهور الرقم */
+.age.animate{
+animation:pop 0.6s ease;
+}
 
+@keyframes pop{
+0%{transform:scale(0.4); opacity:0;}
+60%{transform:scale(1.2);}
+100%{transform:scale(1);}
+}
+
+/* التهنئة */
 .wish{
 font-size:22px;
 margin-top:10px;
 display:none;
+animation:fade 1s;
 }
 
 /* الهدية */
-
 .gift{
-font-size:80px;
+font-size:85px;
 margin-top:25px;
 cursor:pointer;
 display:none;
@@ -56,18 +65,17 @@ transition:0.3s;
 }
 
 .gift:hover{
-transform:scale(1.1);
+transform:scale(1.2);
 }
 
-/* صندوق الرسالة */
-
+/* الرسالة */
 .message-box{
 display:none;
 background:white;
 padding:30px;
-border-radius:12px;
-box-shadow:0 10px 30px rgba(0,0,0,0.1);
-max-width:500px;
+border-radius:14px;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+max-width:520px;
 margin-top:25px;
 line-height:1.8;
 font-size:17px;
@@ -81,16 +89,25 @@ color:#f38ab5;
 }
 
 /* انيميشن */
-
 @keyframes fade{
 from{opacity:0; transform:translateY(10px);}
 to{opacity:1; transform:translateY(0);}
+}
+
+/* الكونفيتي */
+canvas{
+position:fixed;
+top:0;
+left:0;
+pointer-events:none;
 }
 
 </style>
 </head>
 
 <body>
+
+<canvas id="confetti"></canvas>
 
 <div class="intro">
 أخيرًا إتأكدنا انك هبة...  
@@ -109,17 +126,17 @@ to{opacity:1; transform:translateY(0);}
 
 يا هبة،
 
-كل سنة وانتي بخير وعقبال سنين كتير مليانة ضحك وفرح ونجاحات.  
-وجودك في حياتنا حاجة إحنا فعلًا بنقدرها جدًا، وكل لحظة قضيناها سوا كانت مليانة ذكريات جميلة.  
+كل سنة وانتي بخير وعقبال سنين كتير مليانة فرح وضحك وأيام حلوة.  
+إحنا بجد مبسوطين إنك في حياتنا، وكل لحظة قضيناها مع بعض كانت مليانة ذكريات جميلة.
 
-إحنا ممتنين إننا عرفناك، وإن صداقتنا استمرت وكبرت مع الوقت.  
-نتمنى إن السنة الجديدة دي تكون بداية لحاجات أجمل، وأحلام تتحقق، وأيام تكون أخف وأسعد عليك.  
+إنتي شخص مميز جدًا بالنسبة لنا، ووجودك بيضيف طاقة حلوة لأي مكان تكوني فيه.  
+نتمنى إن السنة الجديدة من عمرك تكون مليانة نجاحات، وأحلام تتحقق، وأيام تخليك أسعد.
 
-إنتي شخص مميز فعلًا، وبتضيفي طاقة حلوة لأي مكان تكوني فيه.  
-وعشان كده حبينا نعمل لك المفاجأة الصغيرة دي، عشان نقول لك قد إيه وجودك مهم بالنسبة لنا.
+إحنا ممتنين لصداقتك، ولكل اللحظات اللي عشناها سوا،  
+وعشان كده حبينا نعمل لك المفاجأة الصغيرة دي عشان نقول لك قد إيه إحنا مقدرينك.
 
 كل سنة وانتي طيبة يا هبة 🤍  
-وإن شاء الله الأيام الجاية تكون أحلى بكتير.
+وإن شاء الله الأيام الجاية تكون أجمل بكتير.
 
 <div class="signature">
 من صحباتك، كلنا بنحبك 💗
@@ -127,26 +144,84 @@ to{opacity:1; transform:translateY(0);}
 
 </div>
 
+<!-- موسيقى -->
+<audio id="music" loop>
+<source src="birthday.mp3" type="audio/mpeg">
+</audio>
+
 <script>
 
-/* بعد 3 ثواني يظهر الرقم */
-
+/* ظهور الرقم */
 setTimeout(()=>{
-document.getElementById("age").style.display="block"
-},3000)
+let age=document.getElementById("age")
+age.style.display="block"
+age.classList.add("animate")
+},2500)
 
-/* يتحول من 16 الى 17 */
-
+/* التحول 16 → 17 */
 setTimeout(()=>{
-document.getElementById("age").innerText="17"
+let age=document.getElementById("age")
+age.innerText="17"
+age.classList.add("animate")
+
 document.getElementById("wish").style.display="block"
 document.getElementById("gift").style.display="block"
-},5000)
+
+startConfetti()
+
+document.getElementById("music").play()
+
+},4500)
 
 /* فتح الهدية */
-
 document.getElementById("gift").onclick=function(){
 document.getElementById("message").style.display="block"
+}
+
+/* الكونفيتي */
+
+const canvas=document.getElementById("confetti")
+const ctx=canvas.getContext("2d")
+
+canvas.width=window.innerWidth
+canvas.height=window.innerHeight
+
+let pieces=[]
+
+for(let i=0;i<150;i++){
+pieces.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*6+2,
+d:Math.random()*50
+})
+}
+
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height)
+
+ctx.fillStyle="#f7a8c9"
+
+pieces.forEach(p=>{
+ctx.beginPath()
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2)
+ctx.fill()
+})
+
+update()
+}
+
+function update(){
+pieces.forEach(p=>{
+p.y+=2
+if(p.y>canvas.height){
+p.y=0
+}
+})
+}
+
+function startConfetti(){
+setInterval(draw,20)
 }
 
 </script>
